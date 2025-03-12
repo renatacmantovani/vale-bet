@@ -1,12 +1,12 @@
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { AntDesign } from '@expo/vector-icons'
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useRouter } from 'expo-router'
 const welcome = () => {
     const router = useRouter()
   return (
-    <LinearGradient colors={['#0EDFBD', '#0950AB']}
+    <LinearGradient colors={['#D60270', '#9B4F96', '#0038A8']}
         style={styles.container}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
@@ -14,12 +14,12 @@ const welcome = () => {
     >
      <View style={styles.formContainer}>
         <View style={styles.logoContainer}>
-            <AntDesign style={styles.logo} name="bank" />
-            <Text style={{color: '#FFF', fontSize:32}}>Ecommerce IA</Text>
+            <FontAwesome6 style={styles.logo} name="rainbow" />
+            <Text style={{color: '#FFF', fontSize:32}}>ValeBet</Text>
             <Text style={{color: '#FFF', fontSize:18, marginBottom: 20}}>Seja Bem vindo!</Text>
         </View>
         <TouchableOpacity onPress={() => router.replace('/login')} style={styles.loginButton}><Text style={{color: '#FFF'}}>Login</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => router.replace('/register')} style={styles.registerButton}><Text style={{color: '#0EDFBD'}}>Registrar</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => router.replace('/register')} style={styles.registerButton}><Text style={{color: '#00000'}}>Registrar</Text></TouchableOpacity>
     
     </View>   
 
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 50,
         marginBottom: 10,
-        backgroundColor: '#0EDFBD',
+        backgroundColor: '#0038A8',
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
