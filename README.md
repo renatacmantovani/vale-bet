@@ -40,4 +40,17 @@ Informações sobre o funcionamento do aplicativo:
 - **Update** (Atualizar): Atualização de informações dos apoiadores, como alteração de dados de contato ou valor da contribuição.
 - **Delete** (Excluir): Remoção de um apoiador (em casos raros, como solicitação do próprio apoiador).
 
+--- 
+
+# 💻 Como rodar o projeto:
+
+### Clone o repositório e ao abrir a pasta dele no terminal do VsCode, digite: 
+
+```npm install```
+
+### Pressione enter e aguarde enquanto o node_modules é adicionado. Em seguida, digite: 
+
+```npx expo start```
+
+### Abra o aplicativo ExpoGo e visualize o aplicativo ao scanear o QRCode. 
 
