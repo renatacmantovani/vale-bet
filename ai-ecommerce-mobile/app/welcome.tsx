@@ -1,10 +1,12 @@
-import React from 'react';
+import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
-const Welcome = () => {
+import { useRouter } from 'expo-router'
+const welcome = () => {
+    const router = useRouter()
   return (
-    <LinearGradient colors={['#0EDFBD', '#C60000']}
+    <LinearGradient colors={['#0EDFBD', '#0950AB']}
         style={styles.container}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
@@ -16,8 +18,8 @@ const Welcome = () => {
             <Text style={{color: '#FFF', fontSize:32}}>Ecommerce IA</Text>
             <Text style={{color: '#FFF', fontSize:18, marginBottom: 20}}>Seja Bem vindo!</Text>
         </View>
-        <TouchableOpacity style={styles.loginButton}><Text style={{color: '#FFF'}}>Login</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.registerButton}><Text style={{color: '#0EDFBD'}}>Registrar</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => router.replace('/login')} style={styles.loginButton}><Text style={{color: '#FFF'}}>Login</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => router.replace('/register')} style={styles.registerButton}><Text style={{color: '#0EDFBD'}}>Registrar</Text></TouchableOpacity>
     
     </View>   
 
@@ -71,4 +73,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default Welcome
+export default welcome
