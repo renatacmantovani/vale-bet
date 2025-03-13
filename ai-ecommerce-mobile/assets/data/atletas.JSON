@@ -1,0 +1,102 @@
+[
+    {
+      "nome_completo": "Rayssa Leal",
+      "modalidade": "Skate",
+      "descricao": "Primeira skatista brasileira a conquistar uma medalha de prata nas Olimpíadas de Tóquio 2020, Rayssa é um ícone da nova geração do skate."
+    },
+    {
+      "nome_completo": "Daniel Dias",
+      "modalidade": "Natação Paralímpica",
+      "descricao": "Maior medalhista paralímpico do Brasil, Daniel é um exemplo de superação e dedicação ao esporte."
+    },
+    {
+      "nome_completo": "Ana Marcela Cunha",
+      "modalidade": "Maratona Aquática",
+      "descricao": "Campeã olímpica e mundial, Ana Marcela é uma das maiores nadadoras de águas abertas da história."
+    },
+    {
+      "nome_completo": "Carol Solberg",
+      "modalidade": "Vôlei de Praia",
+      "descricao": "Carol é uma das principais atletas do vôlei de praia e uma defensora ativa dos direitos LGBTQIAP+."
+    },
+    {
+      "nome_completo": "Tifanny Abreu",
+      "modalidade": "Vôlei",
+      "descricao": "Primeira jogadora trans a atuar na Superliga de Vôlei, Tifanny é um símbolo de inclusão no esporte."
+    },
+    {
+      "nome_completo": "Douglas Souza",
+      "modalidade": "Vôlei",
+      "descricao": "Jogador da seleção brasileira de vôlei, Douglas é um dos atletas LGBTQIAP+ mais visíveis do Brasil."
+    },
+    {
+      "nome_completo": "Rafaela Silva",
+      "modalidade": "Judô",
+      "descricao": "Primeira brasileira a ganhar uma medalha de ouro no judô em Olimpíadas, Rafaela é uma inspiração para muitos."
+    },
+    {
+      "nome_completo": "Pamela Rosa",
+      "modalidade": "Skate",
+      "descricao": "Campeã mundial de skate, Pamela é uma das principais representantes do esporte no Brasil."
+    },
+    {
+      "nome_completo": "Duda Lisboa",
+      "modalidade": "Vôlei de Praia",
+      "descricao": "Duda é uma das jovens promessas do vôlei de praia e já coleciona títulos importantes em sua carreira."
+    },
+    {
+      "nome_completo": "Carol Gattaz",
+      "modalidade": "Vôlei",
+      "descricao": "Uma das maiores jogadoras de vôlei do Brasil, Carol é conhecida por sua força e liderança em quadra."
+    },
+    {
+      "nome_completo": "Renan Dal Zotto",
+      "modalidade": "Vôlei",
+      "descricao": "Ex-jogador e técnico da seleção brasileira de vôlei, Renan é uma figura importante no esporte."
+    },
+    {
+      "nome_completo": "Laura Ludwig",
+      "modalidade": "Vôlei de Praia",
+      "descricao": "Campeã olímpica e mundial, Laura é uma das maiores atletas do vôlei de praia da Alemanha."
+    },
+    {
+      "nome_completo": "Tom Daley",
+      "modalidade": "Saltos Ornamentais",
+      "descricao": "Campeão olímpico e mundial, Tom é um dos principais saltadores ornamentais do mundo e um ativista LGBTQIAP+."
+    },
+    {
+      "nome_completo": "Amandine Buchard",
+      "modalidade": "Judô",
+      "descricao": "Medalhista olímpica e mundial, Amandine é uma das principais judocas da França."
+    },
+    {
+      "nome_completo": "Sue Bird",
+      "modalidade": "Basquete",
+      "descricao": "Lenda do basquete feminino, Sue é uma das atletas mais vitoriosas da história do esporte."
+    },
+    {
+      "nome_completo": "Megan Rapinoe",
+      "modalidade": "Futebol",
+      "descricao": "Campeã mundial e olímpica, Megan é uma das maiores jogadoras de futebol e uma ativista pelos direitos LGBTQIAP+."
+    },
+    {
+      "nome_completo": "Adam Rippon",
+      "modalidade": "Patinação Artística",
+      "descricao": "Medalhista olímpico, Adam é um dos principais patinadores artísticos e um defensor da comunidade LGBTQIAP+."
+    },
+    {
+      "nome_completo": "Gus Kenworthy",
+      "modalidade": "Esqui",
+      "descricao": "Medalhista olímpico, Gus é um dos principais esquiadores e um ícone LGBTQIAP+ no esporte."
+    },
+    {
+      "nome_completo": "Quinn",
+      "modalidade": "Futebol",
+      "descricao": "Primeira atleta trans a ganhar uma medalha olímpica, Quinn é uma inspiração para a comunidade LGBTQIAP+."
+    },
+    {
+      "nome_completo": "Stefanie Dolson",
+      "modalidade": "Basquete",
+      "descricao": "Campeã da WNBA, Stefanie é uma das principais jogadoras de basquete e uma defensora da diversidade."
+    }
+  ]
