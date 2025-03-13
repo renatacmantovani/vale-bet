@@ -22,13 +22,13 @@ export default function TabLayout() {
               color: 'white'
             },
             headerStyle: {
-              backgroundColor: '#0EDFBD'
+              backgroundColor: '#9B4F96' // cor do fundo da header
             },
             title: 'Home',
             headerRight: () => <MenuHeader/>,
             tabBarIcon: () => <MaterialCommunityIcons name="home" size={24} color='white'/>,
             tabBarStyle: {
-              backgroundColor: '#0EDFBD'
+              backgroundColor: '#9B4F96' // cor do fundo da tab
             },
             tabBarActiveTintColor: 'white',
             tabBarInactiveTintColor: 'gray'
@@ -37,20 +37,20 @@ export default function TabLayout() {
         <Tabs.Screen
           name="cart"
           options={{
-            title: 'Cart',
+            title: 'Minhas Apostas',
             headerTitleStyle: {
               fontSize: 24,
               fontWeight: 'bold',
               color: 'white'
             },
             headerStyle: {
-              backgroundColor: '#0EDFBD'
+              backgroundColor: '#9B4F96'
             },
             headerRight: () => <MenuHeader/>,
             
             tabBarIcon: () => <MaterialCommunityIcons name="account-circle" size={24} color='white'/>,
             tabBarStyle: {
-              backgroundColor: '#0EDFBD'
+              backgroundColor: '#9B4F96'
             },
             tabBarActiveTintColor: 'white',
             tabBarInactiveTintColor: 'gray'

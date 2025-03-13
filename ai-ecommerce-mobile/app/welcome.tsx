@@ -10,7 +10,6 @@ const welcome = () => {
         style={styles.container}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
-
     >
      <View style={styles.formContainer}>
         <View style={styles.logoContainer}>
