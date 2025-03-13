@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { AntDesign } from '@expo/vector-icons'
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useRouter } from 'expo-router'
 const login = () => {
     const router = useRouter()
@@ -50,7 +50,7 @@ const login = () => {
         }
       } 
   return (
-    <LinearGradient colors={['#0EDFBD', '#0950AB']}
+    <LinearGradient colors={['#D60270', '#9B4F96', '#0038A8']}
         style={styles.container}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
@@ -58,15 +58,15 @@ const login = () => {
     >
      <View style={styles.formContainer}>
         <View style={styles.logoContainer}>
-            <AntDesign style={styles.logo} name="bank" />
-            <Text style={{color: '#FFF', fontSize:32, marginBottom: 20}}>Ecommerce IA</Text>
+            <FontAwesome6 style={styles.logo} name="rainbow" />
+            <Text style={{color: '#FFF', fontSize:32, marginBottom: 20}}>ValeBet</Text>
         </View>
         <TextInput style={styles.input} placeholder='E-mail' onChangeText={(text) => {setEmail({value: text, dirty: true})}}/>
         {handleErrorEmail()}
         <TextInput style={styles.input} placeholder='Senha' onChangeText={(text) => {setPassword({value: text, dirty: true})}} secureTextEntry/>
         {handleErrorPassword()}
         <TouchableOpacity onPress={()=> handleErrorForm()} style={styles.loginButton}><Text style={{color: '#FFF'}}>Entrar</Text></TouchableOpacity>
-        <TouchableOpacity onPress={()=> router.replace('/welcome')} style={styles.backButton}><Text style={{color: '#0EDFBD'}}>Voltar</Text></TouchableOpacity>
+        <TouchableOpacity onPress={()=> router.replace('/welcome')} style={styles.backButton}><Text style={{color: '#000000'}}>Voltar</Text></TouchableOpacity>
     
     </View>   
 
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 50,
         marginBottom: 10,
-        backgroundColor: '#0EDFBD',
+        backgroundColor: '#D60270',
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#0EDFBD',
+        borderColor: '#D60270',
     },
     input: {
         width: '100%',

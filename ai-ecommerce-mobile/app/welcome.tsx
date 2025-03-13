@@ -19,7 +19,7 @@ const welcome = () => {
             <Text style={{color: '#FFF', fontSize:18, marginBottom: 20}}>Seja Bem vindo!</Text>
         </View>
         <TouchableOpacity onPress={() => router.replace('/login')} style={styles.loginButton}><Text style={{color: '#FFF'}}>Login</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => router.replace('/register')} style={styles.registerButton}><Text style={{color: '#00000'}}>Registrar</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => router.replace('/register')} style={styles.registerButton}><Text style={{color: '#00000'}}>Cadastre-se</Text></TouchableOpacity>
     
     </View>   
 
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#0EDFBD',
+        borderColor: '#0038A8',
     },
 
 })

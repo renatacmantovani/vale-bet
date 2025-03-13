@@ -2,11 +2,12 @@ import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useRouter } from 'expo-router'
 const register = () => {
     const router = useRouter()
   return (
-    <LinearGradient colors={['#0EDFBD', '#C60000']}
+    <LinearGradient colors={['#D60270', '#9B4F96', '#0038A8']}
         style={styles.container}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
@@ -14,15 +15,16 @@ const register = () => {
     >
      <View style={styles.formContainer}>
         <View style={styles.logoContainer}>
-            <AntDesign style={styles.logo} name="bank" />
-            <Text style={{color: '#FFF', fontSize:32, marginBottom: 20}}>Ecommerce IA</Text>
+            <FontAwesome6 style={styles.logo} name="rainbow" />
+            <Text style={{color: '#FFF', fontSize:32, marginBottom: 20}}>ValeBet</Text>
         </View>
         <TextInput style={styles.input} placeholder='Nome Completo*'/>
         <TextInput style={styles.input} placeholder='E-mail'/>
+        <TextInput style={styles.input} placeholder='CPF*'/>
         <TextInput style={styles.input} placeholder='Senha' />
         <TextInput style={styles.input} placeholder='Repetir Senha' secureTextEntry/>
         <TouchableOpacity onPress={()=> router.replace('/(tabs)/home')} style={styles.loginButton}><Text style={{color: '#FFF'}}>Enviar</Text></TouchableOpacity>
-        <TouchableOpacity onPress={()=> router.replace('/welcome')} style={styles.backButton}><Text style={{color: '#0EDFBD'}}>Voltar</Text></TouchableOpacity>
+        <TouchableOpacity onPress={()=> router.replace('/welcome')} style={styles.backButton}><Text style={{color: '#000000'}}>Voltar</Text></TouchableOpacity>
     
     </View>   
 
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 50,
         marginBottom: 10,
-        backgroundColor: '#0EDFBD',
+        backgroundColor: '#D60270',
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#0EDFBD',
+        borderColor: '#D60270',
     },
     input: {
         width: '100%',
