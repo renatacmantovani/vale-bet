@@ -31,6 +31,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#f0f0f0', 
+        padding: 20,
     },
     formContainer: {
         width: '80%',
@@ -69,7 +71,37 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#0038A8',
     },
-
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#000',
+    },
+    icon: {
+        fontSize: 24,
+        color: '#000',
+    },
+    boxTop: {
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    button: {
+        alignItems: 'center',
+        padding: 10,
+    },
+    boxMid: {
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    boxBottom: {
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+    }
 })
 
 export default welcome
