@@ -46,7 +46,7 @@ const login = () => {
         }
     
         if(!hasError) {
-            router.replace('/(tabs)/home')
+            router.replace('/tabs/home')
         }
       } 
   return (

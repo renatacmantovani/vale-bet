@@ -1,7 +1,6 @@
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { AntDesign } from '@expo/vector-icons'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useRouter } from 'expo-router'
 const register = () => {
@@ -23,7 +22,7 @@ const register = () => {
         <TextInput style={styles.input} placeholder='CPF*'/>
         <TextInput style={styles.input} placeholder='Senha' />
         <TextInput style={styles.input} placeholder='Repetir Senha' secureTextEntry/>
-        <TouchableOpacity onPress={()=> router.replace('/(tabs)/home')} style={styles.loginButton}><Text style={{color: '#FFF'}}>Enviar</Text></TouchableOpacity>
+        <TouchableOpacity onPress={()=> router.replace('/tabs/home')} style={styles.loginButton}><Text style={{color: '#FFF'}}>Enviar</Text></TouchableOpacity>
         <TouchableOpacity onPress={()=> router.replace('/welcome')} style={styles.backButton}><Text style={{color: '#000000'}}>Voltar</Text></TouchableOpacity>
     
     </View>   
