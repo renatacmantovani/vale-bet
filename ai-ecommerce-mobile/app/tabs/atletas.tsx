@@ -1,6 +1,6 @@
-// ProductPage.tsx
-import React from 'react';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 interface Product {
   id: number;
@@ -69,12 +69,17 @@ const products: Product[] = [
     name: 'Arthur Nory, Ginástica Artística',
     description: 'Atleta de ginástica artística brasileiro, competindo no individual geral. Atualmente faz parte do Clube Pinheiros e da Seleção Brasileira de Ginástica Artística. ',
     imageUrl: 'https://www.esportelandia.com.br/app/uploads/2020/03/nory-jogos-olimpicos-rio-2016.jpg'
-    },
-
-
-  ];
+    }
+];
 
 const ProductPage: React.FC = () => {
+  const navigation = useNavigation();
+  const [cart, setCart] = useState<{ [key: number]: number }>({});
+
+  const addToCart = (id: number) => {
+    setCart((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.section}>
@@ -83,6 +88,15 @@ const ProductPage: React.FC = () => {
             <Image source={{ uri: product.imageUrl }} style={styles.productImage} />
             <Text style={styles.productName}>{product.name}</Text>
             <Text style={styles.productDescription}>{product.description}</Text>
+            <TouchableOpacity 
+              onPress={() => {
+                addToCart(product.id);
+                navigation.navigate('Cart' as never);
+              }} 
+              style={styles.betButton}
+            >
+              <Text style={styles.betButtonText}>Aposte em mim!</Text>
+            </TouchableOpacity>
           </View>
         ))}
       </View>
@@ -91,44 +105,14 @@ const ProductPage: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
-    padding: 20,
-  },
-  section: {
-    backgroundColor: '#ffffff',
-    borderRadius: 20,
-    padding: 10,
-    marginBottom: 12,
-  },
-  productContainer: {
-    marginBottom: 20,
-    padding: 10,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 5,
-  },
-  productImage: {
-    width: '100%',
-    height: 150,
-    borderRadius: 8,
-  },
-  productName: {
-    marginTop: 10,
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  productDescription: {
-    marginTop: 5,
-    fontSize: 14,
-    color: '#666',
-  },
+  container: { flex: 1, backgroundColor: '#f0f0f0', padding: 20 },
+  section: { backgroundColor: '#ffffff', borderRadius: 20, padding: 10, marginBottom: 12 },
+  productContainer: { marginBottom: 20, padding: 10, backgroundColor: '#f9f9f9', borderRadius: 8, alignItems: 'center' },
+  productImage: { width: '100%', height: 150, borderRadius: 8 },
+  productName: { marginTop: 10, fontSize: 18, fontWeight: 'bold', color: '#333' },
+  productDescription: { marginTop: 5, fontSize: 14, color: '#666' },
+  betButton: { backgroundColor: '#28a745', padding: 10, borderRadius: 5, marginTop: 10 },
+  betButtonText: { color: '#FFF', fontSize: 16, fontWeight: 'bold' },
 });
 
 export default ProductPage;

@@ -5,24 +5,31 @@ interface Product {
   id: number;
   name: string;
   description: string;
-  imageUrl: string;
+  image: any;
   price: number;
 }
 
-const productsInCart: Product[] = [
-  {
-    id: 1,
-    name: 'Aposta 01',
-    description: 'Descrição',
-    imageUrl: 'https://via.placeholder.com/150',
-    price: 50,
-  }
+// Apostas disponíveis
+const availableProducts: Product[] = [
+  { id: 1, name: 'Aposta simples', description: 'Apoie um atleta!', image: require('../../assets/images/one.png'), price: 20 },
+  { id: 2, name: 'Casadinha', description: 'Apoie dois atletas!', image: require('../../assets/images/two.png'), price: 40 },
+  { id: 3, name: 'Meu trio favorito!', description: 'Apoie três atletas!', image: require('../../assets/images/three.png'), price: 60 },
 ];
 
 const CartPage: React.FC = () => {
-  const [cartItems] = useState(productsInCart);
-  
-  // Função para calcular o valor total do carrinho
+  const [cartItems, setCartItems] = useState<Product[]>([]);
+
+  // Adicionar
+  const addToCart = (product: Product) => {
+    setCartItems((prevCart) => [...prevCart, product]);
+  };
+
+  // Remover
+  const removeFromCart = (index: number) => {
+    setCartItems((prevCart) => prevCart.filter((_, i) => i !== index));
+  };
+
+  // Calcular
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + item.price, 0);
   };
@@ -30,19 +37,44 @@ const CartPage: React.FC = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.section}>
-        <Text style={styles.title}>Carrinho de Compras</Text>
-        
-        {cartItems.map((product) => (
+        <Text style={styles.title}>Apostas disponíveis</Text>
+
+        {availableProducts.map((product) => (
           <View key={product.id} style={styles.productContainer}>
-            <Image source={{ uri: product.imageUrl }} style={styles.productImage} />
+            <Image source={product.image} style={styles.productImage} /> {/* Corrigido aqui */}
             <View style={styles.productDetails}>
               <Text style={styles.productName}>{product.name}</Text>
               <Text style={styles.productDescription}>{product.description}</Text>
               <Text style={styles.productPrice}>R$ {product.price.toFixed(2)}</Text>
+              <TouchableOpacity style={styles.addButton} onPress={() => addToCart(product)}>
+                <Text style={styles.addButtonText}>Adicionar ao Carrinho</Text>
+              </TouchableOpacity>
             </View>
           </View>
         ))}
-        
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>Minhas apostas</Text>
+
+        {cartItems.length === 0 ? (
+          <Text style={styles.emptyCart}>Seu carrinho está vazio.</Text>
+        ) : (
+          cartItems.map((product, index) => (
+            <View key={index} style={styles.productContainer}>
+              <Image source={product.image} style={styles.productImage} /> {/* Corrigido aqui */}
+              <View style={styles.productDetails}>
+                <Text style={styles.productName}>{product.name}</Text>
+                <Text style={styles.productDescription}>{product.description}</Text>
+                <Text style={styles.productPrice}>R$ {product.price.toFixed(2)}</Text>
+                <TouchableOpacity style={styles.removeButton} onPress={() => removeFromCart(index)}>
+                  <Text style={styles.removeButtonText}>Remover</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ))
+        )}
+
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>Total: R$ {calculateTotal().toFixed(2)}</Text>
         </View>
@@ -68,22 +100,22 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   title: {
-    fontSize: 25,
+    fontSize: 22,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 15,
   },
   productContainer: {
     flexDirection: 'row',
     padding: 10,
     backgroundColor: '#f9f9f9',
     borderRadius: 8,
-    marginBottom: 15,
+    marginBottom: 10,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 5,
+    elevation: 3,
   },
   productImage: {
     width: 100,
@@ -93,6 +125,7 @@ const styles = StyleSheet.create({
   productDetails: {
     marginLeft: 15,
     justifyContent: 'center',
+    flex: 1,
   },
   productName: {
     fontSize: 18,
@@ -104,26 +137,56 @@ const styles = StyleSheet.create({
   },
   productPrice: {
     fontSize: 16,
-    color: '#000',
+    fontWeight: 'bold',
     marginTop: 5,
   },
+  addButton: {
+    backgroundColor: '#4CAF50',
+    padding: 8,
+    borderRadius: 5,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: '#FFF',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  removeButton: {
+    backgroundColor: '#D9534F',
+    padding: 8,
+    borderRadius: 5,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  removeButtonText: {
+    color: '#FFF',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  emptyCart: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#777',
+    marginVertical: 10,
+  },
   totalContainer: {
-    marginTop: 20,
+    marginTop: 10,
     padding: 10,
     backgroundColor: '#eee',
     borderRadius: 8,
-    marginBottom: 15,
+    alignItems: 'center',
   },
   totalText: {
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
   },
   checkoutButton: {
     backgroundColor: '#9B4F96',
     padding: 15,
     borderRadius: 5,
     alignItems: 'center',
+    marginTop: 10,
   },
   checkoutButtonText: {
     color: '#FFF',
