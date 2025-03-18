@@ -1,6 +1,11 @@
-# ValeBet 🌈
+<p align="center">
+  <img src="https://github.com/renatacmantovani/vale-bet/blob/main/ai-ecommerce-mobile/assets/images/Group%202.png?raw=true" alt="Descrição da imagem" width="300">
+</p>
 
-Repositório para entrega de projeto da disciplina "Desenvolver aplicativos para dispositivos móveis e IOT" da Unifacisa.
+
+## 🚧 Em processo de construção 🔧
+
+### Repositório para entrega de projeto da disciplina "Desenvolver aplicativos para dispositivos móveis e IOT" da Unifacisa.
 
 O **ValeBet** é um projeto inovador que visa incentivar a aposta em atletas LGBTQIAP+ para ajudá-los a arrecadar fundos e custear suas participações em competições esportivas. Nosso objetivo é promover a inclusão, a diversidade e o apoio financeiro a atletas que muitas vezes enfrentam barreiras adicionais para alcançar seus sonhos.
 
@@ -26,7 +31,7 @@ Muitos atletas LGBTQIAP+ enfrentam desafios financeiros e sociais para competir 
 
 # 📱Sobre o aplicativo  
 
-Informações sobre o funcionamento do aplicativo:
+O que queremos construir no aplicativo:
 
 ### 🏅 1. CRUD Atletas 
 - **Create** (Criar): Cadastro de novos atletas LGBTQIAP+ na plataforma. Isso inclui informações como nome, história, esporte praticado, metas financeiras, fotos, vídeos, etc.
