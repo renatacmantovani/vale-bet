@@ -16,7 +16,7 @@ const availableProducts: Product[] = [
   { id: 3, name: 'Meu trio favorito!', description: 'Apoie três atletas!', image: require('../../assets/images/three.png'), price: 60 },
 ];
 
-const CartPage: React.FC = () => {
+const Cart: React.FC = () => {
   const [cartItems, setCartItems] = useState<Product[]>([]);
 
   // Adicionar
@@ -41,7 +41,7 @@ const CartPage: React.FC = () => {
 
         {availableProducts.map((product) => (
           <View key={product.id} style={styles.productContainer}>
-            <Image source={product.image} style={styles.productImage} /> {/* Corrigido aqui */}
+            <Image source={product.image} style={styles.productImage} /> 
             <View style={styles.productDetails}>
               <Text style={styles.productName}>{product.name}</Text>
               <Text style={styles.productDescription}>{product.description}</Text>
@@ -62,7 +62,7 @@ const CartPage: React.FC = () => {
         ) : (
           cartItems.map((product, index) => (
             <View key={index} style={styles.productContainer}>
-              <Image source={product.image} style={styles.productImage} /> {/* Corrigido aqui */}
+              <Image source={product.image} style={styles.productImage} />
               <View style={styles.productDetails}>
                 <Text style={styles.productName}>{product.name}</Text>
                 <Text style={styles.productDescription}>{product.description}</Text>
@@ -195,4 +195,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CartPage;
+export default Cart;

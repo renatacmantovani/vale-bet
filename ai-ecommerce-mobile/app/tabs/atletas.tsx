@@ -12,9 +12,9 @@ interface Product {
 const products: Product[] = [
   {
     id: 1,
-    name: 'Rayssa Leal, Skate', 
-    description: 'Primeira skatista brasileira a conquistar uma medalha de prata nas Olimpíadas de Tóquio 2020, Rayssa é um ícone da nova geração do skate.',
-    imageUrl: 'https://s2-oglobo.glbimg.com/hnaqI5AwZlna8-RoyUnZ_hT_RAc=/0x0:5616x3744/924x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_da025474c0c44edd99332dddb09cabe8/internal_photos/bs/2023/F/5/f1VANTQKqU5jUvaPjUyg/101957325-rayssa-leal-of-brazil-celebrates-winning-the-womens-final-in-the-skateboarding-street-wor-1-.jpg',
+    name: 'Marta Vieira, Futebol', 
+    description: 'Foi escolhida como melhor futebolista do mundo por seis vezes, sendo cinco de forma consecutiva. Um recorde não apenas entre mulheres, mas também entre homens.',
+    imageUrl: 'https://fdr.com.br/wp-content/uploads/2021/07/fd3ce297-1000.jpg',
   },
   {
     id: 2,
@@ -74,7 +74,7 @@ const products: Product[] = [
 
 const ProductPage: React.FC = () => {
   const navigation = useNavigation();
-  const [cart, setCart] = useState<{ [key: number]: number }>({});
+  const [Cart, setCart] = useState<{ [key: number]: number }>({});
 
   const addToCart = (id: number) => {
     setCart((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
@@ -91,7 +91,7 @@ const ProductPage: React.FC = () => {
             <TouchableOpacity 
               onPress={() => {
                 addToCart(product.id);
-                navigation.navigate('Cart' as never);
+                navigation.navigate('CartPage' as never);
               }} 
               style={styles.betButton}
             >
