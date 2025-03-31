@@ -1,11 +1,88 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useRouter } from 'expo-router'
-const register = () => {
+
+function Register(){
     const router = useRouter()
-  return (
+        const [nome, setNome] = useState({value: '', dirty: false});
+        const [password, setPassword] = useState({value: '', dirty: false});
+        const [cpf, setCPF] = useState({value: '', dirty: false});
+        const [email, setEmail] = useState({value: '', dirty: false});
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const cpfRegex: RegExp = /^\d{11}$/;
+
+    const handleErrorEmail = () => {
+            if(!email.value && email.dirty) {
+                return <Text style={styles.error}>Campo obrigatório</Text>
+            } else if (!emailRegex.test(email.value) && email.dirty) {
+                return <Text style={styles.error}>E-mail inválido</Text>
+            }
+        }
+    
+        const handleErrorPassword = () => {
+            if(!password.value && password.dirty) {
+                return <Text style={styles.error}>Campo obrigatório</Text>
+            }
+        }
+
+        const handleErrorCPF = () => {
+            if(!cpf.value && cpf.dirty) {
+                return <Text style={styles.error}>Campo obrigatório</Text>
+            } else if (!cpfRegex.test(email.value) && cpf.dirty) {
+                return <Text style={styles.error}>CPF inválido</Text>
+            }
+        }
+
+        const handleErrorNome = () => {
+            if(!nome.value && nome.dirty) {
+                return <Text style={styles.error}>Campo obrigatório</Text>
+            }
+            return null;
+        }
+
+        const handleErrorForm = () => {
+            let hasError = false;
+            if(!password.value) {
+              setPassword({value: password.value, dirty: true})
+              hasError = true;
+            }
+        
+            if(!email.value) {
+              setEmail({value: email.value, dirty: true})
+              hasError = true
+            }
+            
+            if (!emailRegex.test(email.value)) {
+              setEmail({value: email.value, dirty: true})
+              hasError = true
+            }
+
+            if (!cpf.value) {
+                setCPF({value: cpf.value, dirty: true})
+                hasError = true
+            }
+
+            if (!cpfRegex.test(cpf.value)) {
+                setCPF({value: cpf.value, dirty: true})
+                hasError = true
+            }
+
+            if (!nome.value) {
+                setNome({value: nome.value, dirty: true})
+                hasError = true
+            }
+        
+            if(!hasError) {
+                router.replace('/tabs/home')
+            }
+
+    }       
+
+    return (
+
     <LinearGradient colors={['#D60270', '#9B4F96', '#0038A8']}
         style={styles.container}
         start={{ x: 0, y: 0 }}
@@ -17,10 +94,22 @@ const register = () => {
             <FontAwesome6 style={styles.logo} name="rainbow" />
             <Text style={{color: '#FFF', fontSize:32, marginBottom: 20}}>ValeBet</Text>
         </View>
-        <TextInput style={styles.input} placeholder='Nome Completo*'/>
-        <TextInput style={styles.input} placeholder='E-mail'/>
-        <TextInput style={styles.input} placeholder='CPF*'/>
-        <TextInput style={styles.input} placeholder='Senha' />
+        <TextInput onChangeText={(text) => setNome({value: text, dirty: true})}
+        style={styles.input} placeholder='Nome Completo*'/>
+        {handleErrorNome()}
+
+        <TextInput onChangeText={(text) => setEmail({value: text, dirty: true})}
+        style={styles.input} placeholder='E-mail'/>
+        {handleErrorEmail()}
+
+        <TextInput onChangeText={(text) => setCPF({value: text, dirty: true})}
+         style={styles.input} placeholder='CPF*'/>
+        {handleErrorCPF()}
+
+        <TextInput onChangeText={(text) => setPassword({value: text, dirty: true})}
+        style={styles.input} placeholder='Senha' />
+        {handleErrorPassword()}
+
         <TextInput style={styles.input} placeholder='Repetir Senha' secureTextEntry/>
         <TouchableOpacity onPress={()=> router.replace('/tabs/home')} style={styles.loginButton}><Text style={{color: '#FFF'}}>Enviar</Text></TouchableOpacity>
         <TouchableOpacity onPress={()=> router.replace('/welcome')} style={styles.backButton}><Text style={{color: '#000000'}}>Voltar</Text></TouchableOpacity>
@@ -81,8 +170,16 @@ const styles = StyleSheet.create({
         height: 40,
         borderRadius: 5,
         marginBottom: 10
+    },
+    error: {
+        width: '100%',
+        marginBottom: 20,
+        color: '#FFF',
+        fontWeight: 'bold',
+        height: 20,
+        fontSize: 14
     }
 
 })
 
-export default register
+export default Register

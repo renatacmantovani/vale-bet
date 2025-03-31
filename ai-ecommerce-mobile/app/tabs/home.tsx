@@ -57,17 +57,17 @@ const Home = () => {
       
       {/* BOTÕES INTERFACE PRINCIPAL */}
       <View style={styles.menuContainer}>
-        <TouchableOpacity onPress={() => handlePress('/atletas')} style={styles.menuButton}>
+        <TouchableOpacity onPress={() => handlePress('/tabs/atletas')} style={styles.menuButton}>
           <FontAwesome6 name="medal" size={50} color="#000" />
           <Text style={styles.buttonText}> Atletas </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => handlePress('/promocoes')} style={styles.menuButton}>
+        <TouchableOpacity onPress={() => handlePress('/tabs/promocoes')} style={styles.menuButton}>
           <Ionicons name="star-sharp" size={50} color="black" />
           <Text style={styles.buttonText}>Promoções</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => handlePress('/carrinho')} style={styles.menuButton}>
+        <TouchableOpacity onPress={() => handlePress('/tabs/cart')} style={styles.menuButton}>
           <Feather name="shopping-cart" size={50} color="black" />
           <Text style={styles.buttonText}>Apostas</Text>
         </TouchableOpacity>
