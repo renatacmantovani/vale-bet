@@ -1,198 +1,403 @@
-import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { getToken } from '../../auth/auth';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  image: any;
-  price: number;
+interface Atleta {
+  _id: string;
+  nome: string;
+  descricao: string;
+  imagem?: string;
+  apostas: number;
 }
 
-// Apostas disponíveis
-const availableProducts: Product[] = [
-  { id: 1, name: 'Aposta simples', description: 'Apoie um atleta!', image: require('../../assets/images/one.png'), price: 20 },
-  { id: 2, name: 'Casadinha', description: 'Apoie dois atletas!', image: require('../../assets/images/two.png'), price: 40 },
-  { id: 3, name: 'Meu trio favorito!', description: 'Apoie três atletas!', image: require('../../assets/images/three.png'), price: 60 },
-];
+interface ApostaItem {
+  atleta: Atleta;
+  quantidade: number;
+}
 
-const Cart: React.FC = () => {
-  const [cartItems, setCartItems] = useState<Product[]>([]);
+const CarrinhoApostas: React.FC = () => {
+  const [atletas, setAtletas] = useState<Atleta[]>([]);
+  const [apostas, setApostas] = useState<ApostaItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  // Adicionar
-  const addToCart = (product: Product) => {
-    setCartItems((prevCart) => [...prevCart, product]);
+  useEffect(() => {
+    const carregarAtletas = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/atletas', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          mode: 'cors'
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Erro HTTP: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        console.log('Dados recebidos:', data);
+        setAtletas(data);
+      } catch (error) {
+        console.error('Erro ao carregar atletas:', error);
+        toast.error(`Erro ao carregar atletas: ${error}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    carregarAtletas();
+  }, []);
+
+  const adicionarAposta = (atleta: Atleta) => {
+    setApostas(prev => {
+      const existe = prev.find(a => a.atleta._id === atleta._id);
+      if (existe) {
+        return prev.map(a => 
+          a.atleta._id === atleta._id 
+            ? { ...a, quantidade: a.quantidade + 1 } 
+            : a
+        );
+      }
+      return [...prev, { atleta, quantidade: 1 }];
+    });
   };
 
-  // Remover
-  const removeFromCart = (index: number) => {
-    setCartItems((prevCart) => prevCart.filter((_, i) => i !== index));
+  const removerAposta = (atletaId: string) => {
+    setApostas(prev => prev.filter(a => a.atleta._id !== atletaId));
+    toast.info('Aposta removida');
   };
 
-  // Calcular
-  const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + item.price, 0);
+  const atualizarQuantidade = (atletaId: string, valor: number) => {
+    if (valor < 1) return;
+    
+    setApostas(prev => 
+      prev.map(a => 
+        a.atleta._id === atletaId 
+          ? { ...a, quantidade: valor } 
+          : a
+      )
+    );
   };
+
+  const calcularTotalApostas = () => {
+    return apostas.reduce((total, aposta) => total + aposta.quantidade, 0);
+  };
+
+  const finalizarApostas = async () => {
+    const token = getToken();
+    if (!token) {
+      toast.warn('Você precisa estar logado para apostar');
+      return;
+    }
+
+    if (apostas.length === 0) {
+      toast.warn('Adicione pelo menos uma aposta');
+      return;
+    }
+
+    try {
+      // Enviar cada aposta individualmente
+      for (const aposta of apostas) {
+        for (let i = 0; i < aposta.quantidade; i++) {
+          const response = await fetch(`http://localhost:3000/api/atletas/${aposta.atleta._id}/apostar`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          
+          if (!response.ok) throw new Error('Falha ao registrar aposta');
+        }
+      }
+
+      toast.success(`${calcularTotalApostas()} apostas realizadas com sucesso!`);
+      setApostas([]);
+      
+      // Recarregar lista de atletas atualizada
+      const response = await fetch('http://localhost:3000/api/atletas');
+      const data = await response.json();
+      setAtletas(data);
+      
+    } catch (error) {
+      toast.error('Erro ao finalizar apostas');
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>Carregando atletas...</Text>
+      </View>
+    );
+  }
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.section}>
-        <Text style={styles.title}>Apostas disponíveis</Text>
-
-        {availableProducts.map((product) => (
-          <View key={product.id} style={styles.productContainer}>
-            <Image source={product.image} style={styles.productImage} /> 
-            <View style={styles.productDetails}>
-              <Text style={styles.productName}>{product.name}</Text>
-              <Text style={styles.productDescription}>{product.description}</Text>
-              <Text style={styles.productPrice}>R$ {product.price.toFixed(2)}</Text>
-              <TouchableOpacity style={styles.addButton} onPress={() => addToCart(product)}>
-                <Text style={styles.addButtonText}>Adicionar ao Carrinho</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))}
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.title}>Minhas apostas</Text>
-
-        {cartItems.length === 0 ? (
-          <Text style={styles.emptyCart}>Seu carrinho está vazio.</Text>
-        ) : (
-          cartItems.map((product, index) => (
-            <View key={index} style={styles.productContainer}>
-              <Image source={product.image} style={styles.productImage} />
-              <View style={styles.productDetails}>
-                <Text style={styles.productName}>{product.name}</Text>
-                <Text style={styles.productDescription}>{product.description}</Text>
-                <Text style={styles.productPrice}>R$ {product.price.toFixed(2)}</Text>
-                <TouchableOpacity style={styles.removeButton} onPress={() => removeFromCart(index)}>
-                  <Text style={styles.removeButtonText}>Remover</Text>
+    <>
+      <ToastContainer
+  position="top-right"
+  autoClose={5000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  toastStyle={{
+    zIndex: 9999,
+    padding: '16px',
+    marginTop: '80px', // <-- começa abaixo do header
+    backgroundColor: '#fff',
+    color: '#333',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+  }}
+/>
+  
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.section}>
+            <Text style={styles.title}>Atletas Disponíveis</Text>
+            
+            {atletas.map(atleta => (
+              <View key={atleta._id} style={styles.atletaCard}>
+                <View style={styles.atletaInfo}>
+                  <Text style={styles.atletaNome}>{atleta.nome}</Text>
+                  <Text style={styles.atletaDescricao}>{atleta.descricao}</Text>
+                  <Text style={styles.atletaApostas}>Apostas atuais: {atleta.apostas}</Text>
+                </View>
+                
+                <TouchableOpacity
+                  style={styles.adicionarButton}
+                  onPress={() => adicionarAposta(atleta)}
+                >
+                  <Text style={styles.buttonText}>Apostar</Text>
                 </TouchableOpacity>
               </View>
-            </View>
-          ))
-        )}
-
-        <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>Total: R$ {calculateTotal().toFixed(2)}</Text>
-        </View>
-
-        <TouchableOpacity style={styles.checkoutButton}>
-          <Text style={styles.checkoutButtonText}>Finalizar Compra</Text>
-        </TouchableOpacity>
+            ))}
+          </View>
+  
+          <View style={styles.section}>
+            <Text style={styles.title}>Minhas Apostas</Text>
+            
+            {apostas.length === 0 ? (
+              <Text style={styles.emptyMessage}>Nenhuma aposta adicionada</Text>
+            ) : (
+              <>
+                {apostas.map((aposta) => (
+                  <View key={aposta.atleta._id} style={styles.apostaItem}>
+                    <View style={styles.apostaInfo}>
+                      <Text style={styles.apostaNome}>{aposta.atleta.nome}</Text>
+                      <View style={styles.quantidadeContainer}>
+                        <TouchableOpacity
+                          style={styles.quantidadeButton}
+                          onPress={() => atualizarQuantidade(aposta.atleta._id, aposta.quantidade - 1)}
+                        >
+                          <Text style={styles.quantidadeButtonText}>-</Text>
+                        </TouchableOpacity>
+                        
+                        <TextInput
+                          style={styles.quantidadeInput}
+                          value={aposta.quantidade.toString()}
+                          keyboardType="numeric"
+                          onChangeText={(text) => {
+                            const num = parseInt(text) || 1;
+                            atualizarQuantidade(aposta.atleta._id, num);
+                          }}
+                        />
+                        
+                        <TouchableOpacity
+                          style={styles.quantidadeButton}
+                          onPress={() => atualizarQuantidade(aposta.atleta._id, aposta.quantidade + 1)}
+                        >
+                          <Text style={styles.quantidadeButtonText}>+</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                    
+                    <TouchableOpacity
+                      style={styles.removerButton}
+                      onPress={() => removerAposta(aposta.atleta._id)}
+                    >
+                      <Text style={styles.buttonText}>Remover</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+                
+                <View style={styles.resumoContainer}>
+                  <Text style={styles.resumoTexto}>
+                    Total de apostas: {calcularTotalApostas()}
+                  </Text>
+                  
+                  <TouchableOpacity
+                    style={styles.finalizarButton}
+                    onPress={finalizarApostas}
+                  >
+                    <Text style={styles.finalizarButtonText}>Finalizar Apostas</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
+          </View>
+        </ScrollView>
       </View>
-    </ScrollView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
-    padding: 20,
+    backgroundColor: '#f5f5f5',
+    padding: 16,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   section: {
-    backgroundColor: '#ffffff',
-    borderRadius: 20,
-    padding: 10,
-    marginBottom: 12,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: 16,
+    color: '#333',
     textAlign: 'center',
-    marginBottom: 15,
   },
-  productContainer: {
+  atletaCard: {
     flexDirection: 'row',
-    padding: 10,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+    marginBottom: 8,
   },
-  productImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-  },
-  productDetails: {
-    marginLeft: 15,
-    justifyContent: 'center',
+  atletaInfo: {
     flex: 1,
   },
-  productName: {
-    fontSize: 18,
+  atletaNome: {
+    fontSize: 16,
     fontWeight: 'bold',
+    color: '#333',
   },
-  productDescription: {
+  atletaDescricao: {
     fontSize: 14,
     color: '#666',
+    marginVertical: 4,
   },
-  productPrice: {
+  atletaApostas: {
+    fontSize: 13,
+    color: '#888',
+    fontStyle: 'italic',
+  },
+  apostaItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 12,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 6,
+    marginBottom: 8,
+  },
+  apostaInfo: {
+    flex: 1,
+  },
+  apostaNome: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 8,
+  },
+  quantidadeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  quantidadeButton: {
+    width: 30,
+    height: 30,
+    backgroundColor: '#ddd',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+  },
+  quantidadeButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginTop: 5,
+    color: '#333',
   },
-  addButton: {
-    backgroundColor: '#4CAF50',
-    padding: 8,
-    borderRadius: 5,
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  addButtonText: {
-    color: '#FFF',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  removeButton: {
-    backgroundColor: '#D9534F',
-    padding: 8,
-    borderRadius: 5,
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  removeButtonText: {
-    color: '#FFF',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  emptyCart: {
+  quantidadeInput: {
+    width: 50,
+    height: 30,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 4,
+    marginHorizontal: 8,
     textAlign: 'center',
-    fontSize: 16,
-    color: '#777',
-    marginVertical: 10,
   },
-  totalContainer: {
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: '#eee',
-    borderRadius: 8,
+  resumoContainer: {
+    marginTop: 16,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
     alignItems: 'center',
   },
-  totalText: {
+  resumoTexto: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 16,
+    color: '#333',
   },
-  checkoutButton: {
-    backgroundColor: '#9B4F96',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  checkoutButtonText: {
-    color: '#FFF',
+  emptyMessage: {
+    textAlign: 'center',
+    color: '#888',
     fontSize: 16,
+    paddingVertical: 16,
+  },
+  buttonText: {
+    color: '#fff',
     fontWeight: 'bold',
+  },
+  adicionarButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 4,
+  },
+  removerButton: {
+    backgroundColor: '#F44336',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 4,
+    marginLeft: 8,
+  },
+  finalizarButton: {
+    backgroundColor: '#2196F3',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 4,
+    width: '100%',
+    alignItems: 'center',
+  },
+  finalizarButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 
-export default Cart;
+export default CarrinhoApostas;
