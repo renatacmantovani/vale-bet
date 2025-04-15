@@ -3,10 +3,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useRouter } from 'expo-router';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Toast from 'react-native-toast-message';
 import { login } from '../auth/auth';
-
 
 const Login = () => {
   const router = useRouter();
@@ -35,87 +33,67 @@ const Login = () => {
 
   const handleErrorForm = async () => {
     let hasError = false;
-  
+
     if (!password.value) {
       setPassword({ value: password.value, dirty: true });
       hasError = true;
     }
-  
+
     if (!email.value || !emailRegex.test(email.value)) {
       setEmail({ value: email.value, dirty: true });
       hasError = true;
     }
-  
+
     if (hasError) return;
-  
+
     try {
-      const data = await login(email.value, password.value); // <- usa sua função importada
-      toast.success('Login realizado com sucesso!');
+      const data = await login(email.value, password.value);
+      Toast.show({ type: 'success', text1: 'Login realizado com sucesso!' });
       router.replace('/tabs/home');
     } catch (err: any) {
-      toast.error(err.message || 'Erro ao fazer login');
+      Toast.show({ type: 'error', text1: err.message || 'Erro ao fazer login' });
     }
   };
 
   return (
-    <>
-      <ToastContainer
-        position="top-right"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        toastStyle={{
-          zIndex: 9999,
-          padding: '16px',
-          marginTop: '80px',
-          backgroundColor: '#fff',
-          color: '#333',
-        }}
-      />
-
-      <LinearGradient
-        colors={['#D60270', '#9B4F96', '#0038A8']}
-        style={styles.container}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-      >
-        <View style={styles.formContainer}>
-          <View style={styles.logoContainer}>
-            <FontAwesome6 style={styles.logo} name="rainbow" />
-            <Text style={{ color: '#FFF', fontSize: 32, marginBottom: 20 }}>ValeBet</Text>
-          </View>
-
-          <TextInput
-            style={styles.input}
-            placeholder='E-mail'
-            autoCapitalize='none'
-            keyboardType='email-address'
-            onChangeText={(text) => setEmail({ value: text, dirty: true })}
-          />
-          {handleErrorEmail()}
-
-          <TextInput
-            style={styles.input}
-            placeholder='Senha'
-            secureTextEntry
-            onChangeText={(text) => setPassword({ value: text, dirty: true })}
-          />
-          {handleErrorPassword()}
-
-          <TouchableOpacity onPress={handleErrorForm} style={styles.loginButton}>
-            <Text style={{ color: '#FFF' }}>Entrar</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => router.replace('/welcome')} style={styles.backButton}>
-            <Text style={{ color: '#000000' }}>Voltar</Text>
-          </TouchableOpacity>
+    <LinearGradient
+      colors={['#D60270', '#9B4F96', '#0038A8']}
+      style={styles.container}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+    >
+      <View style={styles.formContainer}>
+        <View style={styles.logoContainer}>
+          <FontAwesome6 style={styles.logo} name="rainbow" />
+          <Text style={{ color: '#FFF', fontSize: 32, marginBottom: 20 }}>ValeBet</Text>
         </View>
-      </LinearGradient>
-    </>
+
+        <TextInput
+          style={styles.input}
+          placeholder='E-mail'
+          autoCapitalize='none'
+          keyboardType='email-address'
+          onChangeText={(text) => setEmail({ value: text, dirty: true })}
+        />
+        {handleErrorEmail()}
+
+        <TextInput
+          style={styles.input}
+          placeholder='Senha'
+          secureTextEntry
+          onChangeText={(text) => setPassword({ value: text, dirty: true })}
+        />
+        {handleErrorPassword()}
+
+        <TouchableOpacity onPress={handleErrorForm} style={styles.loginButton}>
+          <Text style={{ color: '#FFF' }}>Entrar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => router.replace('/welcome')} style={styles.backButton}>
+          <Text style={{ color: '#000000' }}>Voltar</Text>
+        </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 };
 
@@ -178,4 +156,13 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;
+// Componente de toast
+import { View as RNView } from 'react-native';
+const LoginWithToast = () => (
+  <RNView style={{ flex: 1 }}>
+    <Login />
+    <Toast />
+  </RNView>
+);
+
+export default LoginWithToast;

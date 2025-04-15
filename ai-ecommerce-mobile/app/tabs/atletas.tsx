@@ -12,7 +12,7 @@ const ProductPage = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/atletas');
+      const response = await fetch('http://192.168.18.16:3000/api/atletas'); //alterar IP da minha máquina aqui
       const data = await response.json();
       setProducts(data);
     } catch (error) {
