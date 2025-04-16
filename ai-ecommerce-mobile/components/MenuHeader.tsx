@@ -15,13 +15,10 @@ const MenuHeader = () => {
         <TouchableOpacity onPress={() => setVisible(true)} style={{ marginRight: 15 }}>
             <MaterialCommunityIcons name="dots-vertical" size={24} color="#FFF" />
         </TouchableOpacity>
-        }
-    >
-    <Menu.Item title={<Text>Perfil</Text>} />
-    <Menu.Item title={<Text>Configurações</Text>}/>
-    <Menu.Item onPress={() => router.push('/chat')} title={<Text>Conversar com a IA</Text>} />
+        }>
+    <Menu.Item onPress={() => router.push('/chat')} title={<Text>Fale conosco</Text>} />
     <Divider />
-    <Menu.Item onPress={() => router.replace('/login')} title={<Text>Logout</Text>} />
+    <Menu.Item onPress={() => router.replace('/login')} title={<Text>Sair</Text>} />
 </Menu>
   )
 }

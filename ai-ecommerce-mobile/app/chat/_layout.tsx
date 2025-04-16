@@ -12,7 +12,7 @@ export default function ChatLayout() {
         <Stack
           screenOptions={{
             headerStyle: {
-              backgroundColor: '#D60270',
+              backgroundColor: '#696880',
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -29,6 +29,6 @@ export default function ChatLayout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#C5C6D0',
   },
 });
