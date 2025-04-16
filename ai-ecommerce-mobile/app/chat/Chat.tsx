@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import {
   SafeAreaView,
   Text,
@@ -9,58 +9,64 @@ import {
 } from 'react-native';
 import styles from './ChatStyle';
 import Balloon from './Baloon';
-import storageService from '../services/storageService';
-import { io } from "socket.io-client";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useLocalSearchParams } from 'expo-router';
 
-const PORT = '3000';
-const SERVER_URL = `http://10.5.6.138:${PORT}`;
-const socket = io(SERVER_URL);
-
-class message {
+type Message = {
   text: string;
   sentBy: string;
-  date: Date;
-
-  constructor(text: string, sentBy: string) {
-    this.text = text;
-    this.sentBy = sentBy;
-    this.date = new Date();
-  }
-}
+  date: string;
+};
 
 const Chat = () => {
-  const [userLogged, setUserLogged] = useState('usuário');
-  const [chat, setChat] = useState<{ messages: message[] }>({ messages: [] });
+  const params = useLocalSearchParams();
+  const [userLogged] = useState<string>(params.userLogged as string);
+  const [chat, setChat] = useState<{ messages: Message[] }>({ messages: [] });
   const [text, setText] = useState('');
+  const ws = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    const ipDoServidor = '192.168.18.16'; // coloque o IP local correto aqui
+    ws.current = new WebSocket(`ws://${ipDoServidor}:3000`);
+
+    ws.current.onopen = () => {
+      console.log('Cliente conectado ao socket com sucesso');
+    };
+
+    ws.current.onmessage = ({ data }) => {
+      try {
+        const msg = JSON.parse(data);
+        setChat(prev => ({ messages: [...prev.messages, msg] }));
+      } catch (e) {
+        console.warn('Mensagem recebida não era JSON:', data);
+      }
+    };
+
+    ws.current.onclose = () => {
+      console.log('Conexão com WebSocket encerrada');
+    };
+
+    return () => {
+      ws.current?.close();
+    };
+  }, []);
 
   const sendMessage = () => {
-    chat.messages.push({text: text, sentBy: userLogged, date: new Date()});
-    setChat({ messages: [...chat.messages] });
-    setText('');
+    if (ws.current?.readyState === WebSocket.OPEN) {
+      const jsonString = JSON.stringify({
+        text: text,
+        sentBy: userLogged,
+        date: new Date()
+      });
+      ws.current.send(jsonString);
+      setChat(prev => ({
+        messages: [...prev.messages, { text, sentBy: userLogged, date: new Date().toISOString() }]
+      }));
+      setText('');
+    } else {
+      console.warn('WebSocket não está conectado.');
+    }
   };
-
-/*  useEffect(() => {
-    socket.on('connect', () => {
-      console.log("Web Socket CONNECTED " + socket.connected);
-    });
-
-    socket.on('disconnect', () => {
-      console.log("Web Socket DISCONNECTED");
-    });
-
-    storageService.getItem('userData').then((data) => {
-      if (data) {
-        setUserLogged(data.name);
-
-        socket.on('chat', (message: Message) => {
-          setChat(prev => ({ messages: [...prev.messages, message] }));
-        });
-      } else {
-        console.warn("userData retornou null");
-      }
-    });
-  }, []);*/
 
   return (
     <Fragment>
@@ -94,8 +100,7 @@ const Chat = () => {
             style={styles.sendButton}
             disabled={!text}
             onPress={sendMessage}
-          >
-            <MaterialCommunityIcons name="send-circle-outline" size={20} color="grey" />
+          ><MaterialCommunityIcons name="send-circle-outline" size={24} color="#333" />
           </TouchableOpacity>
         </View>
       </SafeAreaView>

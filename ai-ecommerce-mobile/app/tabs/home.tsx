@@ -57,20 +57,19 @@ const Home = () => {
       
       {/* BOTÕES INTERFACE PRINCIPAL */}
       <View style={styles.menuContainer}>
-        <TouchableOpacity onPress={() => handlePress('/tabs/atletas')} style={styles.menuButton}>
-          <FontAwesome6 name="medal" size={50} color="#000" />
-          <Text style={styles.buttonText}> Atletas </Text>
-        </TouchableOpacity>
+        <View style={styles.menuItem}>
+          <TouchableOpacity onPress={() => handlePress('/tabs/atletas')} style={styles.circleButton}>
+            <FontAwesome6 name="medal" size={30} color="#000" />
+          </TouchableOpacity>
+          <Text style={styles.buttonLabel}>Atletas</Text>
+        </View>
 
-        <TouchableOpacity onPress={() => handlePress('/tabs/promocoes')} style={styles.menuButton}>
-          <Ionicons name="star-sharp" size={50} color="black" />
-          <Text style={styles.buttonText}>Promoções</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handlePress('/tabs/cart')} style={styles.menuButton}>
-          <Feather name="shopping-cart" size={50} color="black" />
-          <Text style={styles.buttonText}>Apostas</Text>
-        </TouchableOpacity>
+        <View style={styles.menuItem}>
+          <TouchableOpacity onPress={() => handlePress('/tabs/cart')} style={styles.circleButton}>
+            <Feather name="shopping-cart" size={30} color="#000" />
+          </TouchableOpacity>
+          <Text style={styles.buttonLabel}>Apostas</Text>
+        </View>
       </View>
 
       <View style={styles.section}>
@@ -121,6 +120,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     padding: 20,
   },
+  buttonLabel: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 5,
+  },
   section: {
     backgroundColor: '#ffffff',
     borderRadius: 20,
@@ -154,6 +159,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginVertical: 20,
+  },
+  menuItem: {
+    alignItems: 'center',
+    marginHorizontal: 10,
   },
   menuButton: {
     alignItems: 'center',
@@ -196,6 +205,19 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
+  },
+  circleButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
   },
   errorText: {
     color: 'red',
